@@ -9,7 +9,6 @@
 # Dieses Programm löst es automatisch.
 # Input ist eine csv Datei und output ist console.
 #
-# TODO Cell.getOppositeData(data) besser machen (evtl 'state' allgemein ändern)
 # TODO https://docs.python.org/3/howto/logging.html
 
 #################
@@ -19,7 +18,8 @@
 import sys
 import os
 import csv
-import logging
+from typing import Dict
+#import binoxxo
 
 #################
 #### Klassen ####
@@ -66,7 +66,7 @@ class Cell: # Eine Zelle
         return Cell._states[0]
 
     @staticmethod
-    def createCounterArry(length) -> []: # Hilfsmethode, erzeugt Array zum zählen von O und X
+    def createCounterArry(length) -> list(dict): # Hilfsmethode, erzeugt Array zum zählen von O und X
         res = [] # [{'x': 0, 'o': 0}] * length funktioniert nicht!
         while length > len(res):
             res.append({'x': 0, 'o': 0}) # 'o' und 'x'
@@ -108,7 +108,7 @@ class Cell: # Eine Zelle
     def dataIndex(self) -> int: # Gibt den State-Index der Zelle zurück
         return Cell._states.index(self.data)
 
-    def checkDirection(self, direction, length=1) -> []: # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
+    def checkDirection(self, direction, length=1) -> list(dict): # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
         direction = Cell.getDirection(direction)
         nextCell = self.neighbors[direction]
 
@@ -118,7 +118,7 @@ class Cell: # Eine Zelle
             return [nextCell.data]
         return [nextCell.data] + nextCell.checkDirection(direction, length - 1)
 
-    def checkOpposite(self, direction, length=1) -> []: # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
+    def checkOpposite(self, direction, length=1) -> list(dict): # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
         direction = Cell.getDirection(direction)
         oppositeDir = Cell.getOppositeDir(direction)
         return self.checkDirection(direction, length) + self.checkDirection(oppositeDir, length)
@@ -162,7 +162,7 @@ class Grid: # Ein Feld von Zellen (die gelöst werden müssen)
         leftIndex = Cell.getDirection('left')
 
         for rowNmb in range(self.gridLen):
-            assert len(grid[rowNmb]) == self.gridLen, '{}. row isnt the same length as the column!'.format(rowNmb + 1)
+            assert len(self.cells[rowNmb]) == self.gridLen, '{}. row isnt the same length as the column!'.format(rowNmb + 1)
             self.cells.append([])
 
             for colNmb in range(self.gridLen):
