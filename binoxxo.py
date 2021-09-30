@@ -53,7 +53,7 @@ def isEitherXorO(check) -> bool: # Prüft ein Array ob es nur O oder nur X ist
             return False
     return True
 
-def createCounterArry(length) -> []: # Hilfsmethode, erzeugt Array zum zählen von X und O
+def createCounterArry(length) -> list: # Hilfsmethode, erzeugt Array zum zählen von X und O
     res = []
     while length > len(res):
         res.append({_states[1]: 0, _states[2]: 0}) # 'x' und 'o'
@@ -81,7 +81,7 @@ class Cell: # Eine Zelle
     def dataIndex(self) -> int: # Gibt den State-Index der Zelle zurück
         return _states.index(self.data)
 
-    def checkDirection(self, direction, length=1) -> []: # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
+    def checkDirection(self, direction, length=1) -> list: # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
         direction = getDirection(direction)
         nextCell = self.neighbors[direction]
 
@@ -91,7 +91,7 @@ class Cell: # Eine Zelle
             return [nextCell.data]
         return [nextCell.data] + nextCell.checkDirection(direction, length - 1)
 
-    def checkOpposite(self, direction, length=1) -> []: # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
+    def checkOpposite(self, direction, length=1) -> list: # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
         direction = getDirection(direction)
         oppositeDir = getOppositeDir(direction)
         return self.checkDirection(direction, length) + self.checkDirection(oppositeDir, length)
