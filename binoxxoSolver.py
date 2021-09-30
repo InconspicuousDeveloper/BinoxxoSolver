@@ -18,7 +18,6 @@
 import sys
 import os
 import csv
-from typing import Dict
 #import binoxxo
 
 #################
@@ -66,7 +65,7 @@ class Cell: # Eine Zelle
         return Cell._states[0]
 
     @staticmethod
-    def createCounterArry(length) -> list(dict): # Hilfsmethode, erzeugt Array zum zählen von O und X
+    def createCounterArry(length) -> list: # Hilfsmethode, erzeugt Array zum zählen von O und X
         res = [] # [{'x': 0, 'o': 0}] * length funktioniert nicht!
         while length > len(res):
             res.append({'x': 0, 'o': 0}) # 'o' und 'x'
@@ -108,7 +107,7 @@ class Cell: # Eine Zelle
     def dataIndex(self) -> int: # Gibt den State-Index der Zelle zurück
         return Cell._states.index(self.data)
 
-    def checkDirection(self, direction, length=1) -> list(dict): # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
+    def checkDirection(self, direction, length=1) -> list: # Gibt ein Array der nächsten data zurück ('None' wenn kein Nachbar)
         direction = Cell.getDirection(direction)
         nextCell = self.neighbors[direction]
 
@@ -118,7 +117,7 @@ class Cell: # Eine Zelle
             return [nextCell.data]
         return [nextCell.data] + nextCell.checkDirection(direction, length - 1)
 
-    def checkOpposite(self, direction, length=1) -> list(dict): # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
+    def checkOpposite(self, direction, length=1) -> list: # Genau wie checkDirection aber zusätzlich die entgegengesetzte Richtung
         direction = Cell.getDirection(direction)
         oppositeDir = Cell.getOppositeDir(direction)
         return self.checkDirection(direction, length) + self.checkDirection(oppositeDir, length)
